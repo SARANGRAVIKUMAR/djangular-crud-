@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from .models import Article
 from .serializers import ArticleSerializer
+from django.views.decorators.csrfimport csrf_exempt
 
 
 def article_list(request):
@@ -24,7 +25,7 @@ def article_list(request):
             return JsonResponse(serializer.data, status=201)
         return (JsonResponse(serializer.error, status=400))
 
-
+@csrf_exepmt
 def article_detail(request, pk):
     """
     Retrieve, update or delete article.
