@@ -41,9 +41,13 @@ class ArticleViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)"""
 
 
-#generic view set
+"""#generic view set
 #while using mixins.update model mixin we should also add retrive mixin model
 class ArticleViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,mixins.DestroyModelMixin):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()"""
+
+class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
@@ -51,10 +55,9 @@ class ArticleViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.Create
 
 
 
+
 """generic api view"""
 # simplicity of the code and less number of codes
-
-
 class GenericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin,
                      mixins.UpdateModelMixin, mixins.RetrieveModelMixin,
                      mixins.DestroyModelMixin):
