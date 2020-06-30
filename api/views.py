@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from rest_framework import mixins
-from rest_framework.authentication import SessionAuthentication,BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 """generic api view"""
@@ -18,28 +19,35 @@ class GenericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.Crea
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     lookup_field = 'id'
- 
-  
- 
-    def get(self, request, id = None):
- 
+    # for authentication we have to add rest_framework
+    # first checks for session authentication and then for basic authentication
+    #authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # for  token authentication we have to add rest_framework.authtoken in installed apps
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+    def get(self, request, id=None):
+
         if id:
             return self.retrieve(request)
- 
+
         else:
-           return self.list(request)
- 
+            return self.list(request)
+
     def post(self, request):
         return self.create(request)
- 
+
     def put(self, request, id=None):
         return self.update(request, id)
- 
+
     def delete(self, request, id):
         return self.destroy(request, id)
 
 
 """class api view"""
+
+
 class ArticleAPIView(APIView):
 
     def get(self, request):
