@@ -11,7 +11,7 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 
 
-# using simple viewsets
+""" using simple viewsets
 class ArticleViewSet(viewsets.ViewSet):
 
     def list(self, request):
@@ -38,7 +38,14 @@ class ArticleViewSet(viewsets.ViewSet):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)"""
+
+
+#generic view set
+#while using mixins.update model mixin we should also add retrive mixin model
+class ArticleViewSet(viewsets.GenericViewSet,mixins.ListModelMixin,mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,mixins.DestroyModelMixin):
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
 
 
 
